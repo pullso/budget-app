@@ -2,7 +2,7 @@
   <div id="app">
     <Form @submitForm="onFormSubmit" />
     <TotalBalance :total="totalBalance" />
-    <BudgetList :list="list" @deleteItem="onDeleteItem" />
+    <BudgetList :list="list" />
   </div>
 </template>
 
@@ -38,13 +38,13 @@ export default {
   },
   computed: {
     totalBalance() {
-      return Object.values(this.list).reduce((acc, item) => acc + item.value, 0);
+      return Object.values(this.list).reduce((acc, item) => {
+        acc += item.value;
+        return acc;
+      }, 0);
     },
   },
   methods: {
-    onDeleteItem(id) {
-      this.$delete(this.list, id);
-    },
     onFormSubmit(data) {
       const newObj = {
         ...data,

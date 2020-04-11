@@ -1,16 +1,27 @@
 <template>
-  <div class="total-value">Баланс: {{ total }}</div>
+  <div class="total-value" :style="getColorTotal()">Баланс: {{ total }}</div>
 </template>
 
 <script>
 export default {
   name: 'TotalBalance',
+  data() {
+    return {};
+  },
   props: {
     total: {
       type: Number,
-      default: 0
-    }
-  }
+      default: 0,
+    },
+  },
+  methods: {
+    getColorTotal() {
+      if (this.total === 0) {
+        return 'color:black';
+      }
+      return this.total > 0 ? 'color:green' : 'color:red';
+    },
+  },
 };
 </script>
 

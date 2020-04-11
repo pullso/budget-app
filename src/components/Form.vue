@@ -1,5 +1,5 @@
 <template>
-  <ElCard class="form-card">
+  <ElCard class="form-card" :header="header">
     <ElForm :model="formData" ref="addItemForm" :rules="rules" label-position="right">
       <ElFormItem label="Тип" prop="type">
         <ElSelect class="type-select" v-model="formData.type" placeholder="Доход">
@@ -23,6 +23,7 @@ export default {
   name: 'Form',
   data() {
     return {
+      header: 'Добавить операцию',
       formData: {
         type: 'INCOME',
         comment: '',
@@ -42,6 +43,9 @@ export default {
     onSubmit() {
       this.$refs.addItemForm.validate(valid => {
         if (valid) {
+          if (this.formData.type === 'OUTCOME' && this.formData.value >= 0) {
+            this.formData.value *= -1;
+          }
           this.$emit('submitForm', { ...this.formData });
           this.$refs.addItemForm.resetFields();
         }
