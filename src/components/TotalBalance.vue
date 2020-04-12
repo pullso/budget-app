@@ -1,5 +1,7 @@
 <template>
-  <div class="total-value" :style="getColorTotal()">Баланс: {{ total }}</div>
+  <ElCard class="total-value">
+    <div :style="getColorTotal()">Баланс: {{ total }}</div>
+  </ElCard>
 </template>
 
 <script>
@@ -29,7 +31,9 @@ export default {
 .total-value {
   font-size: 26px;
   text-transform: uppercase;
-  padding: 20px;
+  padding: 10px 0;
   text-align: center;
+  max-width: 500px;
+  margin: 0 auto;
 }
 </style>

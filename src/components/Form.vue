@@ -1,5 +1,5 @@
 <template>
-  <ElCard class="form-card" :header="header">
+  <ElCard class="form-card">
     <ElForm :model="formData" ref="addItemForm" :rules="rules" label-position="right">
       <ElFormItem label="Тип" prop="type">
         <ElSelect class="type-select" v-model="formData.type" placeholder="Доход">
@@ -22,6 +22,12 @@
 export default {
   name: 'Form',
   data() {
+    const checkValue = (rule, value, callback) => {
+      if (value < 0 || value == 0) {
+        return callback(new Error('Пожалуйста, введите значение > 0'));
+      }
+      callback();
+    };
     return {
       header: 'Добавить операцию',
       formData: {
@@ -33,8 +39,17 @@ export default {
         type: [{ required: true, message: 'Выберит тип операции', trigger: 'blur' }],
         comment: [{ required: true, message: 'Пожалуйста, введие комментарий', trigger: 'change' }],
         value: [
-          { required: true, message: 'Введите значене операции', trigger: 'change' },
-          { type: 'number', message: 'Значение должно быть числом' },
+          {
+            required: true,
+            message: 'Введите значение операции',
+            trigger: 'change',
+          },
+          {
+            type: 'number',
+            message: 'Значение должно быть числом',
+            trigger: 'change',
+          },
+          { validator: checkValue },
         ],
       },
     };
@@ -58,7 +73,8 @@ export default {
 <style scoped>
 .form-card {
   max-width: 500px;
-  margin: auto;
+  margin: 0 auto;
+  padding-top: 0px;
 }
 .type-select {
   width: 100%;
