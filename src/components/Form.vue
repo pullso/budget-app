@@ -19,6 +19,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 export default {
   name: 'Form',
   data() {
@@ -33,7 +35,7 @@ export default {
       formData: {
         type: 'INCOME',
         comment: '',
-        value: 0,
+        value: 0
       },
       rules: {
         type: [{ required: true, message: 'Выберит тип операции', trigger: 'blur' }],
@@ -42,31 +44,33 @@ export default {
           {
             required: true,
             message: 'Введите значение операции',
-            trigger: 'change',
+            trigger: 'change'
           },
           {
             type: 'number',
             message: 'Значение должно быть числом',
-            trigger: 'change',
+            trigger: 'change'
           },
-          { validator: checkValue },
-        ],
-      },
+          { validator: checkValue }
+        ]
+      }
     };
   },
   methods: {
+    ...mapActions('budget', ['addNewOperation']),
     onSubmit() {
       this.$refs.addItemForm.validate(valid => {
         if (valid) {
           if (this.formData.type === 'OUTCOME' && this.formData.value >= 0) {
             this.formData.value *= -1;
           }
-          this.$emit('submitForm', { ...this.formData });
+
+          this.addNewOperation(this.formData);
           this.$refs.addItemForm.resetFields();
         }
       });
-    },
-  },
+    }
+  }
 };
 </script>
 

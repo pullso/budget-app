@@ -1,29 +1,24 @@
 <template>
   <ElCard class="total-value">
-    <div :style="getColorTotal()">Баланс: {{ total }}</div>
+    <div :style="getColorBalance">Баланс: {{ totalBalance }}</div>
   </ElCard>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'TotalBalance',
-  data() {
-    return {};
-  },
-  props: {
-    total: {
-      type: Number,
-      default: 0,
-    },
-  },
-  methods: {
-    getColorTotal() {
-      if (this.total === 0) {
+
+  computed: {
+    ...mapGetters('budget', ['totalBalance']),
+    getColorBalance() {
+      if (this.totalBalance === 0) {
         return 'color:black';
       }
-      return this.total > 0 ? 'color:green' : 'color:red';
-    },
-  },
+      return this.totalBalance > 0 ? 'color:green' : 'color:red';
+    }
+  }
 };
 </script>
 

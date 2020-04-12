@@ -16,7 +16,7 @@
           </ElButtonGroup>
         </div>
         <hr />
-        <BudgetListItem :list="list" @deleteItem="onDeleteItem" :sort="sort" />
+        <BudgetListItem :list="list" :sort="sort" />
       </template>
       <ElAlert v-else type="info" :title="emptyTitle" :closable="false"></ElAlert>
     </ElCard>
@@ -29,31 +29,26 @@ import BudgetListItem from './BudgetListItem';
 export default {
   name: 'BudgetList',
   components: {
-    BudgetListItem,
+    BudgetListItem
   },
   props: {
     list: {
       type: Object,
-      defaul: () => ({}),
-    },
+      defaul: () => ({})
+    }
   },
   data() {
     return {
       header: 'Список операций',
       emptyTitle: 'Список операций пуст',
-      sort: 'ALL',
+      sort: 'ALL'
     };
   },
   computed: {
     isEmpty() {
       return !Object.keys(this.list).length;
-    },
-  },
-  methods: {
-    onDeleteItem(id) {
-      this.$delete(this.list, id);
-    },
-  },
+    }
+  }
 };
 </script>
 

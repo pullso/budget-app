@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <Form @submitForm="onFormSubmit" />
-    <TotalBalance :total="totalBalance" />
+    <TotalBalance />
     <BudgetList :list="list" />
   </div>
 </template>
@@ -10,49 +10,28 @@
 import BudgetList from '@/components/BudgetList';
 import TotalBalance from '@/components/TotalBalance';
 import Form from '@/components/Form';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'App',
   components: {
     BudgetList,
     TotalBalance,
-    Form,
+    Form
   },
-  data() {
-    return {
-      list: {
-        1: {
-          type: 'INCOME',
-          value: 10000,
-          comment: 'Разработка сайта',
-          id: 1,
-        },
-        2: {
-          type: 'OUTCOME',
-          value: -2500,
-          comment: 'Услуги дизайнера ',
-          id: 2,
-        },
-      },
-    };
-  },
+
   computed: {
-    totalBalance() {
-      return Object.values(this.list).reduce((acc, item) => {
-        acc += item.value;
-        return acc;
-      }, 0);
-    },
+    ...mapGetters('budget', ['list'])
   },
   methods: {
     onFormSubmit(data) {
       const newObj = {
         ...data,
-        id: String(Math.random()),
+        id: String(Math.random())
       };
       this.$set(this.list, newObj.id, newObj);
-    },
-  },
+    }
+  }
 };
 </script>
 

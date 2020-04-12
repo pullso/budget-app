@@ -3,7 +3,7 @@
     <div v-for="(item, prop) in list" :key="prop">
       <div :sort="sort" v-show="showSort(item.type)" class="list-item">
         <span class="budget-comment">{{ item.comment }}</span>
-        <i v-if="item.type==='INCOME'" class="el-icon-top" style="color:green"></i>
+        <i v-if="item.type === 'INCOME'" class="el-icon-top" style="color:green"></i>
         <i v-else class="el-icon-bottom" style="color:red"></i>
         <span class="budget-value">{{ item.value }}</span>
 
@@ -12,13 +12,15 @@
       <!-- <ElButton type="text">Click to open the Dialog</ElButton> -->
 
       <ElDialog title="Внимание" :visible.sync="centerDialogVisible" width="50%" center>
-        <span>Вы собираетесь удалить операцию. В будущем ее нельзя будет восстановить. Удалить операцию?</span>
+        <span
+          >Вы собираетесь удалить операцию. В будущем ее нельзя будет восстановить. Удалить
+          операцию?</span
+        >
         <span slot="footer" class="dialog-footer">
           <ElButton @click="centerDialogVisible = false">Отмена</ElButton>
-          <ElButton
-            type="primary"
-            @click="[centerDialogVisible = false, deleteItem(item.id)]"
-          >Удалить</ElButton>
+          <ElButton type="primary" @click="[(centerDialogVisible = false), deleteItem(item.id)]"
+            >Удалить</ElButton
+          >
         </span>
       </ElDialog>
     </div>
@@ -26,6 +28,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 export default {
   name: 'BudgetListItem',
   data() {
@@ -34,22 +38,29 @@ export default {
   props: {
     list: {
       type: Object,
-      default: () => ({}),
+      default: () => ({})
     },
     sort: {
       type: String,
-      default: 'ALL',
+      default: 'ALL'
     },
+    budgetList: {
+      type: Array
+    }
   },
   methods: {
+    ...mapActions('budget', ['deleteOperation']),
     deleteItem(id) {
-      this.$emit('deleteItem', id);
+      this.deleteOperation(id);
     },
+    // deleteItem(id) {
+    //   this.$emit('deleteItem', id);
+    // },
     showSort(item) {
       if (this.sort === 'ALL') return true;
       if (item === this.sort) return true;
-    },
-  },
+    }
+  }
 };
 </script>
 
